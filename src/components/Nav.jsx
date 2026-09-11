@@ -1,5 +1,5 @@
-import React from "react";
-import piggy from "../assets/porco.png";
+import React from "react"
+import piggy from "../assets/porco.png"
 
 const Nav = () => {
 	return (
@@ -12,7 +12,7 @@ const Nav = () => {
 				A React App for County Fair Hog Fans
 			</span>
 		</div>
-	);
-};
+	)
+}
 
-export default Nav;
+export default Nav
