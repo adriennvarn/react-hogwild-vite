@@ -3,6 +3,7 @@ import Nav from "./Nav"
 import HogCard from "./HogCard"
 import GreasedBar from "./GreasedBar"
 import SortBar from "./SortBar"
+import HogForm from "./HogForm"
 import { v4 as uuid } from "uuid"
 
 import hogs from "../porkers_data"
@@ -11,9 +12,10 @@ function App() {
     const [hiddenHogs, setHiddenHogs] = useState([])
     const [greasedOnly, setGreasedOnly] = useState(false)
     const [sort, setSort] = useState("all")
+    const [hogList, setHogList] = useState(hogs)
 
     function sortedHogs() {
-        const filterGreasedHogs = (greasedOnly ? hogs.filter(hog => hog.greased) : hogs)
+        const filterGreasedHogs = (greasedOnly ? hogList.filter(hog => hog.greased) : hogList)
         const filterHiddenHogs = filterGreasedHogs.filter(hog => !hiddenHogs.includes(hog))
         if (sort === "all") {
             return filterHiddenHogs
@@ -25,12 +27,8 @@ function App() {
             return filterHiddenHogs.toSorted((a, b) => a.weight - b.weight)
         }
         else {
-            console.log("Error in sortedHogs()")
+            console.error("Error in sortedHogs()")
         }
-    }
-
-    function hideHog(hog) {
-        setHiddenHogs([...hiddenHogs, hog])
     }
 
     return (
@@ -40,9 +38,10 @@ function App() {
             <SortBar sort={sort} setSort={setSort} />
             <div className="ui grid container">
                 {sortedHogs().map(hog => (
-                    <HogCard hog={hog} key={uuid()} hideHog={(hog) => hideHog(hog)} />
+                    <HogCard hog={hog} key={uuid()} hideHog={(hog) => setHiddenHogs([...hiddenHogs, hog])} />
                 ))}
             </div>
+            <HogForm addHog={(hog) => setHogList([...hogList, hog])} />
         </div>
     )
 }
